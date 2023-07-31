@@ -45,45 +45,90 @@
     <script src="./JS/Firebase/Firebase.js"></script>
     <script src="./JS/Firebase/add.js"></script>
     <script>
-        soccer.addTeam(['Rohan Rovers', 'Elrond Athletic', 'Sauron Town', 'White Tree Park']);
 
-        soccer.renderLeague({
-            leagueName: 'Middle Earth League 1', // name of your league
-            dropdown: 3, // collapse table from 3rd place and render toggle to table
-            zones: [3, 4] // set a promotion and relegation zone
+        const booksRef = firebase.firestore().collection("PL");
+        booksRef.get().then((snapshot) => {
+            const data = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+
+            // Function to extract TeamNames from team objects
+            function extractTeamNames(data) {
+                return data.map(function (team) {
+                    return team.TeamName;
+                });
+            }
+
+
+
+            // Call the function to extract TeamNames and store them in an array
+            var teamNamesArray = extractTeamNames(data);
+
+            // Now teamNamesArray will contain ["Green FC", "Blue United", "Red Strikers"]
+            console.log(teamNamesArray);
+
+            soccer.addTeam(teamNamesArray);
+
+            console.log("data innitn ", data)
+            //soccer.addTeam([teamNamesArray]);
+            soccer.renderLeague({
+                leagueName: 'Namibia Premier League', // name of your league
+                dropdown: 3, // collapse table from 3rd place and render toggle to table
+                zones: [3, 4] // set a promotion and relegation zone
+            });
+
+
+
+
         });
     </script>
 
     <script>
-        //Add this script after initializing Firebase
 
-        //// Function to add a single team to Firebase
-        //function addTeamToFirebase(teamName) {
-        //    // Get a reference to the "teams" node in the Firebase database
-        //    var teamsRef = database.ref("teams");
 
-        //    // Generate a unique key for the team using Firebase's push method
-        //    var newTeamRef = teamsRef.push();
 
-        //    // Set the team data using the team name
-        //    newTeamRef.set({
-        //        name: teamName,
-        //    });
-        //}
 
-        //// Function to handle form submission
-        //document.getElementById("teamForm").addEventListener("submit", function (event) {
-        //    event.preventDefault();
 
-        //    // Get the team name from the input field
-        //    var teamName = document.getElementById("teamName").value;
 
-        //    // Call the function to add the team to Firebase
-        //    addTeamToFirebase(teamName);
 
-        //    // Clear the input field after adding the team
-        //    document.getElementById("teamName").value = '';
-        //});
+
+
+
+
+
+
+
+                        //Add this script after initializing Firebase
+
+                        //// Function to add a single team to Firebase
+                        //function addTeamToFirebase(teamName) {
+                        //    // Get a reference to the "teams" node in the Firebase database
+                        //    var teamsRef = database.ref("teams");
+
+                        //    // Generate a unique key for the team using Firebase's push method
+                        //    var newTeamRef = teamsRef.push();
+
+                        //    // Set the team data using the team name
+                        //    newTeamRef.set({
+                        //        name: teamName,
+                        //    });
+                        //}
+
+                        //// Function to handle form submission
+                        //document.getElementById("teamForm").addEventListener("submit", function (event) {
+                        //    event.preventDefault();
+
+                        //    // Get the team name from the input field
+                        //    var teamName = document.getElementById("teamName").value;
+
+                        //    // Call the function to add the team to Firebase
+                        //    addTeamToFirebase(teamName);
+
+                        //    // Clear the input field after adding the team
+                        //    document.getElementById("teamName").value = '';
+                        //});
     </script>
 
 
